@@ -1,9 +1,12 @@
 #!/bin/sh
-set -eu
 
 DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 . "$DIR/../lib.sh"
 HTTPS="https://www.google.com/"
+
+test $G_SKIP
+local_init
+
 
 log wait https test
 wait_https $HTTPS
@@ -21,4 +24,4 @@ log https body test
 https_get_body $HTTPS
 ret
 
-test test
+local_resume
