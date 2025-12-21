@@ -1,34 +1,40 @@
 #!/bin/sh
 
+SELF="${TEST_FILE:-$0}"
+NAME="${SELF##*/}"
 DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+TEST_ROOT="$DIR"
 . "$DIR/lib.sh"
 
-clear
-
 global_init
-
-test $G_SKIP
 
 require_cmd curl
 require_cmd grep
 
-log "Lancement des tests depuis: $DIR"
-separator
-ret
+ret; separator; ret
+launch "Lancement des tests depuis: $NAME"
+separator; ret
 
 for _t in "$DIR"/*/[0-9][0-9]_test_*.sh; do
+
 	[ -f "$_t" ] || continue
+
 	G_COUNT=$((G_COUNT + 1))
-	log "→ RUN $(basename "$_t")"
-	if sh "$_t"; then
+	
+	TEST_FILE="$_t"
+	. "$_t"
+	unset TEST_FILE
+
+	if [ "$G_ERRNO" -eq 0 ]; then
 		G_PASS=$((G_PASS + 1))
-		info "← PASS $(basename "$_t")"
+	elif [ "$G_ERRNO" -eq 1 ]; then
+		G_FAIL=$((G_FAIL + 1))
+	elif [ "$G_ERRNO" -eq 2 ]; then
+		G_SKIP=$((G_SKIP + 1))
 	else
 		G_FAIL=$((G_FAIL + 1))
-		info "← FAIL $(basename "$_t")"
 	fi
-	separator
-	ret
+
 done
 
 if [ "$G_COUNT" -eq 0 ]; then

@@ -1,10 +1,18 @@
 #!/bin/sh
 
-DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
-. "$DIR/../lib.sh"
+SELF="${TEST_FILE:-$0}"
+NAME="${SELF##*/}"
+DIR="$(CDPATH= cd -- "$(dirname -- "$SELF")" && pwd)"
+
+if [ -n "${TEST_ROOT:-}" ] && [ -f "$TEST_ROOT/lib.sh" ]; then
+    . "$TEST_ROOT/lib.sh"
+else
+    . "$DIR/../lib.sh"
+    global_init
+fi
 
 local_init
 
-warn empty test 00_celestine
+skip
 
 local_resume

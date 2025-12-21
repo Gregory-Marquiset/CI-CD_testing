@@ -25,7 +25,8 @@ else
     ITALIC="3";     UNDER="4"
     BLINK="5";      STRIKE="9"
 
-    RED="31";       GRE="92"
+    RED="31";       LRE="91"
+    GRE="32";       LGR="92"
     YEL="93";       BLU="94"
     MAG="95";       CYA="96"
     BRO="33";       BLA="30"
@@ -42,17 +43,20 @@ fi
 # =========
 
 ret()       { printf "\n"; }
-separator() { printf "${ON}${BLU}m""           ------------------------------""$RES"; }
+separator() { printf "${ON}${BLU}m""              ----------------------------""$RES"; }
 
+launch()    { printf "%s" " [${ON}${MAG};${BLINK}m" "  LAUNCH  " "${RES}] " "$*"; ret; }
 test()      { printf "%s" " [${ON}${MAG};${BLINK}m" "   TEST   " "${RES}] " "$*"; ret; }
-log()       { printf "%s" " [${ON}${BLU}m"          "   INFO   " "${RES}] " "$*"; ret; }
+info()      { printf "%s" " [${ON}${CYA}m"          "   INFO   " "${RES}] " "$*"; ret; }
+logs()      { printf "%s" " [${ON}${BLU}m"          "   LOGS   " "${RES}] " "$*"; ret; }
 warn()      { printf "%s" " [${ON}${YEL}m"          "   WARN   " "${RES}] " "$*"; ret; }
+skiped()      { printf "%s" " [${ON}${BRO}m"          "  SKIPED  " "${RES}] " "$*"; ret; }
 
-ok()        { printf "%s" " [${ON}${CYA}m"          "    OK    " "${RES}] " "$*"; ret; }
-pass()      { printf "%s" " [${ON}${GRE}m"          "   PASS   " "${RES}] " "$*"; ret; }
-validate()  { printf "%s" " [${ON}${GRE};${BLINK}m" " VALIDATE " "${RES}] " "$*"; ret; }
+ok()        { printf "%s" " [${ON}${GRE}m"          "    OK    " "${RES}] " "$*"; ret; }
+pass()      { printf "%s" " [${ON}${LGR}m"          "   PASS   " "${RES}] " "$*"; ret; }
+validate()  { printf "%s" " [${ON}${LGR};${BLINK}m" " VALIDATE " "${RES}] " "$*"; ret; }
 
-ko()        { printf "%s" " [${ON}${BRO}m"          "    KO    " "${RES}] " "$*"; ret; }
+ko()        { printf "%s" " [${ON}${LRE}m"          "    KO    " "${RES}] " "$*"; ret; }
 fail()      { printf "%s" " [${ON}${RED}m"          "   FAIL   " "${RES}] " "$*"; ret; }
 failed()    { printf "%s" " [${ON}${RED};${BLINK}m" "  FAILED  " "${RES}] " "$*"; ret; }
 
@@ -92,6 +96,10 @@ local_init()
     L_KO=0
     L_SKIP=0
     L_ERRNO=0
+
+    ret; separator; ret; ret
+    info "→ RUN $NAME"
+    ret
 }
 
 # Apres votre logique ajouter: local_resume
@@ -113,17 +121,24 @@ local_resume()
         _dur_str="${_ms}ms"
     fi
 
+    if [ "$L_SKIP" -ne 0 ]; then
+        skiped "script skiped ($_dur_str)"
+        ret; separator; ret; ret
+        G_ERRNO=2
+        return 2
+    fi
     G_OK=$((G_OK + L_OK))
     G_KO=$((G_KO + L_KO))
-	G_SKIP=$((G_SKIP + 1))
     if [ "$L_KO" -eq 0 ]; then
-        pass    "TOTAL: $L_COUNT  OK: $L_OK  KO: $L_KO  SKIP: $L_SKIP  ($_dur_str)"
+        pass    "TOTAL: $L_COUNT  OK: $L_OK  KO: $L_KO  ($_dur_str)"
+        ret; separator; ret; ret
         G_ERRNO=0
-        exit 0
+        return 0
     else
-        fail      "TOTAL: $L_COUNT  OK: $L_OK  KO: $L_KO  SKIP: $L_SKIP  ($_dur_str)"
+        fail      "TOTAL: $L_COUNT  OK: $L_OK  KO: $L_KO  ($_dur_str)"
+        ret; separator; ret; ret
         G_ERRNO=1
-        exit 1
+        return 1
     fi
 }
 
@@ -145,21 +160,24 @@ global_resume()
         _dur_str="${_ms}ms"
     fi
 
-    ret
-    separator
-    ret
+    ret; separator; ret
+
     if [ "$G_FAIL" -eq 0 ]; then
         validate    "TOTAL: $G_COUNT  PASS: $G_PASS  FAIL: $G_FAIL  SKIP: $G_SKIP  OK: $G_OK KO: $G_KO  ($_dur_str)"
     else
         failed      "TOTAL: $G_COUNT  PASS: $G_PASS  FAIL: $G_FAIL  SKIP: $G_SKIP  OK: $G_OK KO: $G_KO  ($_dur_str)"
     fi
-    separator
+
+    separator; ret; ret
 }
 
 
 # =========
 # Helpers
 # =========require_cmd(curl)
+
+skip() { L_SKIP=$((L_SKIP + 1)); }
+
 require_cmd()
 {
     command -v "$1" >/dev/null 2>&1 || fail "Commande manquante: $1"
