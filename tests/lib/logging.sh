@@ -4,22 +4,22 @@
 # =========
 
 ret()       { printf "\n"; }
-separator() { printf "${ON}${BLU}m""              ----------------------------""$RES"; }
+separator() { printf "${ON}${BLU}${OFF}""              ----------------------------""$RES"; }
 
-launch()    { printf "%s" " [${ON}${MAG};${BLINK}m" "  LAUNCH  " "${RES}] " "$*"; ret; }
-test()      { printf "%s" " [${ON}${MAG};${BLINK}m" "   TEST   " "${RES}] " "$*"; ret; }
-info()      { printf "%s" " [${ON}${CYA}m"          "   INFO   " "${RES}] " "$*"; ret; }
-logs()      { printf "%s" " [${ON}${BLU}m"          "   LOGS   " "${RES}] " "$*"; ret; }
-warn()      { printf "%s" " [${ON}${YEL}m"          "   WARN   " "${RES}] " "$*"; ret; }
-skiped()      { printf "%s" " [${ON}${BRO}m"          "  SKIPED  " "${RES}] " "$*"; ret; }
+launch()    { printf "%s" " [${ON}${MAG}${SEP}${BLINK}${OFF}"   "  LAUNCH  " "${RES}] " "$*"; ret; }
+test()      { printf "%s" " [${ON}${MAG}${SEP}${BLINK}${OFF}"   "   TEST   " "${RES}] " "$*"; ret; }
+info()      { printf "%s" " [${ON}${CYA}${OFF}"                 "   INFO   " "${RES}] " "$*"; ret; }
+logs()      { printf "%s" " [${ON}${BLU}${OFF}"                 "   LOGS   " "${RES}] " "$*"; ret; }
+warn()      { printf "%s" " [${ON}${YEL}${OFF}"                 "   WARN   " "${RES}] " "$*"; ret; }
+skiped()    { printf "%s" " [${ON}${BRO}${OFF}"                 "  SKIPED  " "${RES}] " "$*"; ret; }
 
-ok()        { printf "%s" " [${ON}${GRE}m"          "    OK    " "${RES}] " "$*"; ret; }
-pass()      { printf "%s" " [${ON}${LGR}m"          "   PASS   " "${RES}] " "$*"; ret; }
-validate()  { printf "%s" " [${ON}${LGR};${BLINK}m" " VALIDATE " "${RES}] " "$*"; ret; }
+ok()        { printf "%s" " [${ON}${GRE}${OFF}"                 "    OK    " "${RES}] " "$*"; ret; }
+pass()      { printf "%s" " [${ON}${LGR}${OFF}"                 "   PASS   " "${RES}] " "$*"; ret; }
+validate()  { printf "%s" " [${ON}${LGR}${SEP}${BLINK}${OFF}"   " VALIDATE " "${RES}] " "$*"; ret; }
 
-ko()        { printf "%s" " [${ON}${LRE}m"          "    KO    " "${RES}] " "$*"; ret; }
-fail()      { printf "%s" " [${ON}${RED}m"          "   FAIL   " "${RES}] " "$*"; ret; }
-failed()    { printf "%s" " [${ON}${RED};${BLINK}m" "  FAILED  " "${RES}] " "$*"; ret; }
+ko()        { printf "%s" " [${ON}${LRE}${OFF}"                 "    KO    " "${RES}] " "$*"; ret; }
+fail()      { printf "%s" " [${ON}${RED}${OFF}"                 "   FAIL   " "${RES}] " "$*"; ret; }
+failed()    { printf "%s" " [${ON}${RED}${SEP}${BLINK}${OFF}"   "  FAILED  " "${RES}] " "$*"; ret; }
 
 red()   { printf "%s" "${ON}${RED}m" "$*" "$RES"; }
 gre()   { printf "%s" "${ON}${GRE}m" "$*" "$RES"; }

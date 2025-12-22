@@ -4,7 +4,8 @@
 # =========
 
 if [ "${NO_ANSI:-0}" = "1" ] || [ ! -t 1 ]; then
-    RES=""
+    ON="";          OFF=""
+    RES="";         SEP=""
     BOLD="";        DIM=""
     ITALIC="";      UNDER=""
     BLINK="";       STRIKE=""
@@ -19,6 +20,8 @@ if [ "${NO_ANSI:-0}" = "1" ] || [ ! -t 1 ]; then
     BG_CYAN="";     BG_YELLOW=""
 else
     ON="$(printf '\033[')"
+    OFF="$(printf 'm')"
+    SEP="$(printf ';')"
     RES="$(printf '\033[0m')"
 
     BOLD="1";       DIM="2"

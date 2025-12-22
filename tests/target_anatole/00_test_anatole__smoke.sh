@@ -17,6 +17,8 @@ logs wait https test
 wait_https $HTTPS
 ret
 
+test test
+
 logs https health test
 https_get_health $HTTPS
 ret

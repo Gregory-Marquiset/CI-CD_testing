@@ -1,0 +1,49 @@
+
+              ----------------------------
+ [  LAUNCH  ] Lancement des tests depuis: run_all.sh
+              ----------------------------
+
+              ----------------------------
+
+ [   INFO   ] → RUN 00_test_anatole__smoke.sh
+
+ [   LOGS   ] wait https test
+ [    OK    ] HTTPS up: https://www.google.com/
+
+ [   TEST   ] test
+ [   LOGS   ] https health test
+ [    OK    ] health check successful: https://www.google.com/health/
+
+ [   LOGS   ] https headers test
+ [    OK    ] headers GET successful: https://www.google.com/
+
+ [   LOGS   ] https body test
+ [    OK    ] GET body successful: https://www.google.com/
+
+ [   PASS   ] TOTAL: 4  OK: 4  KO: 0  (818ms)
+
+              ----------------------------
+
+
+              ----------------------------
+
+ [   INFO   ] → RUN 10_test_anatole__config.sh
+
+ [  SKIPED  ] script skiped (3ms)
+
+              ----------------------------
+
+
+              ----------------------------
+
+ [   INFO   ] → RUN 20_test_anatole__healtcheck.sh
+
+ [  SKIPED  ] script skiped (2ms)
+
+              ----------------------------
+
+
+              ----------------------------
+ [ VALIDATE ] TOTAL: 3  PASS: 1  FAIL: 0  SKIP: 2  OK: 4 KO: 0  (842ms)
+              ----------------------------
+

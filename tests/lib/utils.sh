@@ -94,13 +94,14 @@ global_resume()
 
     if [ "$G_FAIL" -eq 0 ]; then
         validate    "TOTAL: $G_COUNT  PASS: $G_PASS  FAIL: $G_FAIL  SKIP: $G_SKIP  OK: $G_OK KO: $G_KO  ($_dur_str)"
+        separator; ret; ret
+        exit 0
     else
         failed      "TOTAL: $G_COUNT  PASS: $G_PASS  FAIL: $G_FAIL  SKIP: $G_SKIP  OK: $G_OK KO: $G_KO  ($_dur_str)"
+        separator; ret; ret
+        exit 1
     fi
-
-    separator; ret; ret
 }
-
 
 skip() { L_SKIP=$((L_SKIP + 1)); }
 
