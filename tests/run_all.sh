@@ -3,8 +3,11 @@
 SELF="${TEST_FILE:-$0}"
 NAME="${SELF##*/}"
 DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+
 TEST_ROOT="$DIR"
-. "$DIR/lib.sh"
+
+LOG_LIB_FILE="$DIR/lib/lib.sh"
+. "$LOG_LIB_FILE"
 
 global_init
 

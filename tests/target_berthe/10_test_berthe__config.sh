@@ -2,14 +2,12 @@
 
 SELF="${TEST_FILE:-$0}"
 NAME="${SELF##*/}"
-DIR="$(CDPATH= cd -- "$(dirname -- "$SELF")" && pwd)"
+T_DIR="$(CDPATH= cd -- "$(dirname -- "$SELF")" && pwd)"
 
-if [ -n "${TEST_ROOT:-}" ] && [ -f "$TEST_ROOT/lib.sh" ]; then
-    . "$TEST_ROOT/lib.sh"
-else
-    . "$DIR/../lib.sh"
-    global_init
-fi
+ROOT="$T_DIR/.."
+
+LOG_LIB_FILE="$ROOT/lib/lib.sh"
+. "$LOG_LIB_FILE"
 
 local_init
 
