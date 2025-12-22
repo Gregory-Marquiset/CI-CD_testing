@@ -51,7 +51,7 @@ local_resume()
         _dur_str="${_ms}ms"
     fi
 
-    if [ "$L_SKIP" -ne 0 ]; then
+    if [ "$L_COUNT" -eq 0 ] || { [ "$L_OK" -eq 0 ] && [ "$L_KO" -eq 0 ]; }; then
         skiped "script skiped ($_dur_str)"
         ret; separator; ret; ret
         G_ERRNO=2

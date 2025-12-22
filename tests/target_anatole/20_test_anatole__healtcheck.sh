@@ -11,6 +11,4 @@ LOG_LIB_FILE="$ROOT/lib/lib.sh"
 
 local_init
 
-skip
-
 local_resume

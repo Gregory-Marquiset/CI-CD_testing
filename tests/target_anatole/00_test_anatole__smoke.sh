@@ -13,8 +13,6 @@ local_init
 
 HTTPS="https://www.google.com/"
 
-#L_SKIP=$((L_SKIP + 1))
-
 logs wait https test
 wait_https $HTTPS
 ret
