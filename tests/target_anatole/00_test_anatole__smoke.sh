@@ -14,7 +14,7 @@ local_init
 HTTPS="https://www.google.com/"
 
 logs wait https test
-wait_https $HTTPS
+wait_https $HTTPS 5 1
 ret
 
 test test
