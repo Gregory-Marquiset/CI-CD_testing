@@ -1,37 +1,48 @@
 #!/bin/sh
-set -eu
 
+SELF="${TEST_FILE:-$0}"
+NAME="${SELF##*/}"
 DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
-. "$DIR/lib.sh"
+
+TEST_ROOT="$DIR"
+
+LOG_LIB_FILE="$DIR/lib/lib.sh"
+. "$LOG_LIB_FILE"
+
+global_init
 
 require_cmd curl
 require_cmd grep
 
-log "Lancement des tests: $DIR"
+ret; separator; ret
+launch "Lancement des tests depuis: $NAME"
+separator; ret
 
-failed=0
-count=0
+for _t in "$DIR"/*/[0-9][0-9]_test_*.sh; do
 
-for t in "$DIR"/*/[0-9][0-9]_test_*.sh; do
-  [ -f "$t" ] || continue
-  count=$((count + 1))
-  log "→ RUN $(basename "$t")"
-  if sh "$t"; then
-    ok "← PASS $(basename "$t")"
-  else
-    failed=$((failed + 1))
-    fail "← FAIL $(basename "$t")"
-  fi
+	[ -f "$_t" ] || continue
+
+	G_COUNT=$((G_COUNT + 1))
+	
+	TEST_FILE="$_t"
+	. "$_t"
+	unset TEST_FILE
+
+	if [ "$G_ERRNO" -eq 0 ]; then
+		G_PASS=$((G_PASS + 1))
+	elif [ "$G_ERRNO" -eq 1 ]; then
+		G_FAIL=$((G_FAIL + 1))
+	elif [ "$G_ERRNO" -eq 2 ]; then
+		G_SKIP=$((G_SKIP + 1))
+	else
+		G_FAIL=$((G_FAIL + 1))
+	fi
+
 done
 
-if [ "$count" -eq 0 ]; then
-  warn "Aucun test trouvé."
-  exit 0
+if [ "$G_COUNT" -eq 0 ]; then
+	warn "Aucun test trouvé."
+	exit 0
 fi
 
-if [ "$failed" -eq 0 ]; then
-  ok "Tous les tests sont OK ($count/$count)"
-  exit 0
-fi
-
-fail "$failed test(s) ont échoué"
+global_resume
