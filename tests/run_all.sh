@@ -18,7 +18,7 @@ ret; separator; ret
 launch "Lancement des tests depuis: $NAME"
 separator; ret
 
-for _t in "$DIR"/*/[0-9][0-9]_test_*.sh; do
+for _t in "$DIR"/*/[0-9][0-9]_*__*.sh; do
 
 	[ -f "$_t" ] || continue
 

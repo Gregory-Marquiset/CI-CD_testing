@@ -11,24 +11,8 @@ LOG_LIB_FILE="$ROOT/lib/lib.sh"
 
 local_init
 
-HTTPS="https://www.google.com/"
+HTTPS="https://127.0.0.1:8443/static/"
 
-logs wait https test
-wait_https $HTTPS 5 1
-ret
-
-test test
-
-logs https health test
 https_get_health $HTTPS
-ret
-
-logs https headers test
-https_get_headers $HTTPS
-ret
-
-logs https body test
-https_get_body $HTTPS
-ret
 
 local_resume

@@ -1,0 +1,26 @@
+FROM alpine:3.21
+
+RUN apk add --no-cache nginx openssl ca-certificates wget
+
+RUN addgroup -S nginx-user && adduser -S -G nginx-user nginx-user
+
+RUN mkdir -p /var/run/nginx /var/cache/nginx /etc/nginx/conf.d /etc/nginx/ssl \
+    && chown -R nginx-user:nginx-user /var/run/nginx /var/cache/nginx /etc/nginx /var/log/nginx /var/lib/nginx
+
+COPY conf/nginx.conf /etc/nginx/nginx.conf
+COPY tools/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+USER nginx-user
+
+EXPOSE 8443
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["nginx","-g","daemon off;"]
+
+# tester nginx
+#   docker ps --format 'table {{.Names}}\t{{.Ports}}'
+#   ss -tulpen | grep -E ':80 |:443 '
+#   curl -vk https://gmarquis.42.fr | grep SSL
+#   curl -k https://gmarquis.42.fr/health
+#   co refuser: curl -v http://gmarquis.42.fr

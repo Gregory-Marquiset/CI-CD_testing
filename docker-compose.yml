@@ -1,0 +1,38 @@
+#version: "3.8"
+
+services:
+  static:
+    container_name: static
+    image: static
+    build: ./service/static-site
+    networks: [testnet]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8080/health >/dev/null || exit 1"]
+      start_period: 5s
+      timeout: 3s
+      interval: 10s
+      retries: 5
+
+  nginx:
+    container_name: nginx
+    image: nginx
+    build:
+      context: ./service/nginx
+    ports:
+      - "8443:8443"
+    networks: [testnet]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "https://localhost:8443/health", "--no-check-certificate"]
+      start_period: 60s
+      timeout: 5s
+      interval: 10s
+      retries: 10
+    depends_on:
+      static:
+        condition: service_healthy
+
+networks:
+  testnet:
+    name: test_net

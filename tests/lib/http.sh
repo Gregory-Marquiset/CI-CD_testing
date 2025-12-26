@@ -1,15 +1,15 @@
 
 # =========
-# HTTPS
+# HTTP
 # =========
 
 # v -> imprime la reponse
 
-# wait_https [v] [URL] [max_tries] [sleep_sec]
-wait_https()
+# wait_http [v] [URL] [max_tries] [sleep_sec]
+wait_http()
 {
     L_COUNT=$((L_COUNT + 1))
-    logs wait https test
+    logs wait http test
 
     if [ "$1" = "v" ]; then
         _url="$2"
@@ -24,28 +24,28 @@ wait_https()
     _i=1
     if [ "$1" = "v" ]; then
         while [ "$_i" -le "$_max" ]; do
-            if curl -kfsS "$_url"; then
+            if curl -fsS "$_url"; then
                 ret
-                ok "HTTPS up: $_url"
+                ok "http up: $_url"
                 L_OK=$((L_OK + 1))
                 L_ERRNO=0
                 ret
                 return 0
             fi
-            warn "Attente HTTPS: $_url (${_i}/${_max})"
+            warn "Attente http: $_url (${_i}/${_max})"
             _i=$((_i + 1))
             sleep "$_pause"
         done
     else
         while [ "$_i" -le "$_max" ]; do
-            if curl -kfsS "$_url" >/dev/null 2>&1; then
-                ok "HTTPS up: $_url"
+            if curl -fsS "$_url" >/dev/null 2>&1; then
+                ok "http up: $_url"
                 L_OK=$((L_OK + 1))
                 L_ERRNO=0
                 ret
                 return 0
             fi
-            warn "Attente HTTPS: $_url (${_i}/${_max})"
+            warn "Attente http: $_url (${_i}/${_max})"
             _i=$((_i + 1))
             sleep "$_pause"
         done
@@ -58,10 +58,10 @@ wait_https()
 }
 
 # http_get_body URL [v] [URL] -> GET le body
-https_get_body()
+http_get_body()
 {
     L_COUNT=$((L_COUNT + 1))
-    logs body https test
+    logs body http test
 
     if [ "$#" -ne 2 ]; then
         _body="$1"
@@ -70,7 +70,7 @@ https_get_body()
     fi
 
     if [ "$1" = "v" ]; then
-        if curl -kfsS "$_body"; then
+        if curl -fsS "$_body"; then
             ret
             ok "GET body successful: $_body"
             L_OK=$((L_OK + 1))
@@ -86,7 +86,7 @@ https_get_body()
             return 1
         fi
     else
-        if curl -kfsS "$_body" >/dev/null; then
+        if curl -fsS "$_body" >/dev/null; then
             ok "GET body successful: $_body"
             L_OK=$((L_OK + 1))
             L_ERRNO=0
@@ -103,10 +103,10 @@ https_get_body()
 }
 
 # http_get_headers [v] [URL] -> GET le header
-https_get_headers()
+http_get_headers()
 {
     L_COUNT=$((L_COUNT + 1))
-    logs headers https test
+    logs headers http test
 
     if [ "$#" -ne 2 ]; then
         _head="$1"
@@ -115,7 +115,7 @@ https_get_headers()
     fi
 
     if [ "$1" = "v" ]; then
-        if curl -kfIsS "$_head"; then
+        if curl -fIsS "$_head"; then
             ok "headers GET successful: $_head"
             L_OK=$((L_OK + 1))
             L_ERRNO=0
@@ -129,7 +129,7 @@ https_get_headers()
             return 1
         fi
     else
-        if curl -kfIsS "$_head" >/dev/null; then
+        if curl -fIsS "$_head" >/dev/null; then
             ok "headers GET successful: $_head"
             L_OK=$((L_OK + 1))
             L_ERRNO=0
@@ -145,11 +145,11 @@ https_get_headers()
     fi
 }
 
-# https_get_health [v] [URL] -> GET le health check
-https_get_health()
+# http_get_health [v] [URL] -> GET le health check
+http_get_health()
 {
     L_COUNT=$((L_COUNT + 1))
-    logs health https test
+    logs health http test
 
     if [ "$#" -ge 2 ]; then
         _health="$2"health/
@@ -158,7 +158,7 @@ https_get_health()
     fi
 
     if [ "$1" = "v" ]; then
-        if curl -kfsS "$_health"; then
+        if curl -fsS "$_health"; then
             ret
             ok "health check successful: $_health"
             L_OK=$((L_OK + 1))
@@ -173,7 +173,7 @@ https_get_health()
             return 1
         fi
     else
-        if curl -kfsS "$_health" >/dev/null; then
+        if curl -fsS "$_health" >/dev/null; then
             ok "health check successful: $_health"
             L_OK=$((L_OK + 1))
             L_ERRNO=0
