@@ -33,6 +33,23 @@ services:
       static:
         condition: service_healthy
 
+  global_health:
+    container_name: global_health
+    image: alpine:3.21
+    networks: [testnet]
+    depends_on:
+      static:
+        condition: service_healthy
+      nginx:
+        condition: service_healthy
+    command: ["sh","-lc", "apk add --no-cache wget ca-certificates >/dev/null; sleep infinity"]
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://static:8080/health >/dev/null && wget -qO- https://nginx:8443/health --no-check-certificate >/dev/null"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+
 networks:
   testnet:
     name: test_net

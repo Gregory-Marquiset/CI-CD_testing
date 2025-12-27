@@ -1,0 +1,48 @@
+
+===== FAIL: 00_nginx__smoke.sh | 2025-12-27 14:08:23 =====
+
+              ----------------------------
+
+ [   INFO   ] → RUN 00_nginx__smoke.sh
+
+ [   LOGS   ] wait https test
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (1/30)
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (2/30)
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (3/30)
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (4/30)
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (5/30)
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (6/30)
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (7/30)
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (8/30)
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (9/30)
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (10/30)
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (11/30)
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (12/30)
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (13/30)
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (14/30)
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (15/30)
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (16/30)
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (17/30)
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (18/30)
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (19/30)
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (20/30)
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (21/30)
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (22/30)
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (23/30)
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (24/30)
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (25/30)
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (26/30)
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (27/30)
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (28/30)
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (29/30)
+ [   WARN   ] Attente HTTPS: https://nginx:8443/ (30/30)
+ [    KO    ] Timeout: https://nginx:8443/ ne répond pas
+
+ [   LOGS   ] health https test
+curl: (6) Could not resolve host: nginx
+ [    KO    ] health check failed: https://nginx:8443/health/
+
+ [   FAIL   ] TOTAL: 2  OK: 0  KO: 2  (30s737ms)
+
+              ----------------------------
+

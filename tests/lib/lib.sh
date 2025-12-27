@@ -13,6 +13,7 @@ LOG_LIB_DIR="$(CDPATH= cd -- "$(dirname -- "$LOG_LIB_FILE")" && pwd)"
 . "$LOG_LIB_DIR/logging.sh"
 . "$LOG_LIB_DIR/utils.sh"
 
+. "$LOG_LIB_DIR/http.sh"
 . "$LOG_LIB_DIR/https.sh"
 . "$LOG_LIB_DIR/compose.sh"
 #. "$LOG_LIB_DIR/asserts.sh"

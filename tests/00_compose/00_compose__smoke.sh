@@ -11,16 +11,12 @@ LOG_LIB_FILE="$ROOT/lib/lib.sh"
 
 local_init
 
-# compose_down
-
 compose_config
 
 compose_build
 
 compose_up
 
-compose_wait_healthy static 10
-
-compose_wait_healthy nginx 10
+compose_wait_healthy global_health
 
 local_resume

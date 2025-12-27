@@ -13,6 +13,8 @@ local_init
 
 HTTPS="https://127.0.0.1:8443/static/"
 
-wait_https $HTTPS 3 1
+wait_https $HTTPS
+
+https_get_health $HTTPS
 
 local_resume

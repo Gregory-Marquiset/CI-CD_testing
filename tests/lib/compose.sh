@@ -32,7 +32,7 @@ compose_config()
             return 1
         fi
     else
-        if compose config > /dev/null; then
+        if compose config > /dev/null 2>&1; then
             ok compose config valide
             L_OK=$((L_OK + 1))
             L_ERRNO=0
@@ -69,7 +69,7 @@ compose_build()
             return 1
         fi
     else
-        if compose build --no-cache > /dev/null; then
+        if compose build --no-cache > /dev/null 2>&1; then
             ok compose build valide
             L_OK=$((L_OK + 1))
             L_ERRNO=0
@@ -106,7 +106,7 @@ compose_up()
             return 1
         fi
     else
-        if compose up -d --build --remove-orphans > /dev/null; then
+        if compose up -d --build --remove-orphans > /dev/null 2>&1; then
             ok compose up valide
             L_OK=$((L_OK + 1))
             L_ERRNO=0
@@ -143,7 +143,7 @@ compose_down()
             return 1
         fi
     else
-        if compose down -v --remove-orphans > /dev/null; then
+        if compose down -v --remove-orphans > /dev/null 2>&1; then
             ok compose down valide
             L_OK=$((L_OK + 1))
             L_ERRNO=0
@@ -168,18 +168,18 @@ compose_health_status()
     svc="$1"
 
     cid="$(compose_cid "$svc")"
-    ret
-    test $cid
-    ret
     if [ -z "$cid" ]; then
+        echo "no-container"
         return 1
     fi
 
     status="$(docker inspect -f '{{if .State.Health}}{{.State.Health.Status}}{{else}}no-healthcheck{{end}}' "$cid" 2>/dev/null || true)"
     if [ -z "$status" ]; then
+        echo "unknown"
         return 1
     fi
 
+    echo "$status"
     return 0
 }
 
@@ -187,9 +187,6 @@ compose_health_status()
 # compose_wait_healthy [v] <service> [timeout]
 compose_wait_healthy()
 {
-    L_COUNT=$((L_COUNT + 1))
-    logs compose wait_healthy "$svc"
-
     if [ "$1" = "v" ]; then
         verbose="$1"
         svc="$2"
@@ -200,23 +197,26 @@ compose_wait_healthy()
         _timeout="${2:-60}"
     fi
 
-    _i=0
-    while [ "$_i" -lt "$_timeout" ]; do
-        status="$(compose_health_status "$svc")"
+    L_COUNT=$((L_COUNT + 1))
+    logs compose wait_healthy "$svc"
+
+    _i=1
+    while [ "$_i" -le "$_timeout" ]; do
+        status="$(compose_health_status "$svc" || true)"
 
         if [ "$status" = "healthy" ]; then
-            ok "$svc" healthy "(${_i}s)"
             L_OK=$((L_OK + 1))
             L_ERRNO=0
+            ok "$svc" healthy "(${_i}s)"
             ret
             return 0
         fi
 
         if [ "$status" = "no-container" ]; then
-            ko "$svc" no-container
             [ "$verbose" = "v" ] && compose ps || true
             L_KO=$((L_KO + 1))
             L_ERRNO=1
+            ko "$svc" no-container
             ret
             return 1
         fi
@@ -225,24 +225,26 @@ compose_wait_healthy()
         if [ -n "$cid" ]; then
             running="$(docker inspect -f '{{.State.Running}}' "$cid" 2>/dev/null || echo "false")"
             if [ "$running" != "true" ]; then
-                ko "$svc" "not-running (status=$status)"
                 [ "$verbose" = "v" ] && docker inspect "$cid" || true
                 L_KO=$((L_KO + 1))
                 L_ERRNO=1
+                ko "$svc" "not-running (status=$status)"
                 ret
                 return 1
             fi
         fi
 
-        warn "[$svc] health=$status (t=${_i}s/${timeout}s)"
+        warn "[$svc] health=$status (${_i}/${_timeout})"
         _i=$((_i + 1))
         sleep 1
     done
 
-    ko "$svc" "timeout waiting healthy (last=$status, ${timeout}s)"
-    [ "$verbose" = "v" ] && compose logs --tail=80 "$svc" || true
+    if [ "$verbose" = "v" ]; then
+        compose logs --tail=80 "$svc"
+    fi
     L_KO=$((L_KO + 1))
     L_ERRNO=1
+    ko "$svc" "timeout waiting healthy"
     ret
     return 1
 }

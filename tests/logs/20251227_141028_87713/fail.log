@@ -1,0 +1,69 @@
+
+===== FAIL: 00_nginx__smoke.sh | 2025-12-27 14:10:48 =====
+
+              ----------------------------
+
+ [   INFO   ] → RUN 00_nginx__smoke.sh
+
+ [   LOGS   ] health https test
+curl: (6) Could not resolve host: nginx
+ [    KO    ] health check failed: https://nginx:8443/health/
+
+ [   FAIL   ] TOTAL: 1  OK: 0  KO: 1  (23ms)
+
+              ----------------------------
+
+
+===== FAIL: 00_static__smoke.sh | 2025-12-27 14:11:18 =====
+
+              ----------------------------
+
+ [   INFO   ] → RUN 00_static__smoke.sh
+
+ [   LOGS   ] wait https test
+ [    OK    ] HTTPS up: https://127.0.0.1:8443/static/
+
+ [   LOGS   ] health https test
+ [    OK    ] health check successful: https://127.0.0.1:8443/static/health/
+
+ [   LOGS   ] wait http test
+ [   WARN   ] Attente http: http://static:8080/ (1/30)
+ [   WARN   ] Attente http: http://static:8080/ (2/30)
+ [   WARN   ] Attente http: http://static:8080/ (3/30)
+ [   WARN   ] Attente http: http://static:8080/ (4/30)
+ [   WARN   ] Attente http: http://static:8080/ (5/30)
+ [   WARN   ] Attente http: http://static:8080/ (6/30)
+ [   WARN   ] Attente http: http://static:8080/ (7/30)
+ [   WARN   ] Attente http: http://static:8080/ (8/30)
+ [   WARN   ] Attente http: http://static:8080/ (9/30)
+ [   WARN   ] Attente http: http://static:8080/ (10/30)
+ [   WARN   ] Attente http: http://static:8080/ (11/30)
+ [   WARN   ] Attente http: http://static:8080/ (12/30)
+ [   WARN   ] Attente http: http://static:8080/ (13/30)
+ [   WARN   ] Attente http: http://static:8080/ (14/30)
+ [   WARN   ] Attente http: http://static:8080/ (15/30)
+ [   WARN   ] Attente http: http://static:8080/ (16/30)
+ [   WARN   ] Attente http: http://static:8080/ (17/30)
+ [   WARN   ] Attente http: http://static:8080/ (18/30)
+ [   WARN   ] Attente http: http://static:8080/ (19/30)
+ [   WARN   ] Attente http: http://static:8080/ (20/30)
+ [   WARN   ] Attente http: http://static:8080/ (21/30)
+ [   WARN   ] Attente http: http://static:8080/ (22/30)
+ [   WARN   ] Attente http: http://static:8080/ (23/30)
+ [   WARN   ] Attente http: http://static:8080/ (24/30)
+ [   WARN   ] Attente http: http://static:8080/ (25/30)
+ [   WARN   ] Attente http: http://static:8080/ (26/30)
+ [   WARN   ] Attente http: http://static:8080/ (27/30)
+ [   WARN   ] Attente http: http://static:8080/ (28/30)
+ [   WARN   ] Attente http: http://static:8080/ (29/30)
+ [   WARN   ] Attente http: http://static:8080/ (30/30)
+ [    KO    ] Timeout: http://static:8080/ ne répond pas
+
+ [   LOGS   ] health http test
+curl: (6) Could not resolve host: static
+ [    KO    ] health check failed: http://static:8080/health/
+
+ [   FAIL   ] TOTAL: 4  OK: 2  KO: 2  (30s728ms)
+
+              ----------------------------
+
